@@ -6,14 +6,22 @@ cols = {'1', '2', '3', '4', '5', '6', '12', '13', '14', '15', '16', '23', '24', 
         '1246', '1256', '1345', '1346', '1356', '1456', '2345', '2346', '2356', '2456', '3456', '12345', '12346',
         '12356', '12456', '13456', '23456', '123456'}
 
-workbook = pd.read_excel('ASVT_DZ1.xlsx')
-for st in cols:
-    a = set()
-    for i in range(64):
-        if workbook['F'][i] == 0:
-            a.add(workbook[st][i])
-    for i in range(64):
-        if workbook[st][i] in a:
-            workbook.loc[i, st] = ''
 
-workbook.to_excel('Final.xlsx')
+def del_bad_cells(table):
+    for st in cols:
+        a = set()
+        for i in range(64):
+            if table['F'][i] == 0:
+                a.add(table[st][i])
+        for i in range(64):
+            if table[st][i] in a:
+                table.loc[i, st] = ''
+
+
+def output(table):
+    table.to_excel('Final.xlsx')
+
+
+if __name__ == '__main__':
+    workbook = pd.read_excel('ASVT_DZ1.xlsx')
+    del_bad_cells(workbook)
