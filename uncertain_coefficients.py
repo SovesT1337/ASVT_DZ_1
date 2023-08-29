@@ -1,4 +1,4 @@
-#Copyright by SovesT 2023
+# Copyright by SovesT 2023
 import pandas as pd
 
 cols = ['1', '2', '3', '4', '5', '6', '12', '13', '14', '15', '16', '23', '24', '25', '26', '34', '35',
@@ -8,11 +8,12 @@ cols = ['1', '2', '3', '4', '5', '6', '12', '13', '14', '15', '16', '23', '24', 
         '12356', '12456', '13456', '23456', '123456']
 
 
-def del_bad_cells(table):
+def del_bad_cells(table, f):
     for st in range(63):
         a = set()
         for i in range(64):
-            if table.iat[i, 63] == '0':
+            if f[i] == '0':
+                table.iat[i, 63] = f[i]
                 a.add(table.iat[i, st])
         for i in range(64):
             if table.iat[i, st] in a:
@@ -48,8 +49,8 @@ def make_boolean_expression(table):
             print(st)
 
 
-def method_of_uncertain_coefficients():
+def method_of_uncertain_coefficients(f):
     workbook = pd.read_excel('First_Table.xlsx').astype(str)
-    del_bad_cells(workbook)
+    del_bad_cells(workbook, f)
     output(workbook)
     make_boolean_expression(workbook)
