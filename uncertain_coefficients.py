@@ -12,12 +12,13 @@ def del_bad_cells(table, f):
     for st in range(63):
         a = set()
         for i in range(64):
+            table.iat[i, 63] = f[i]
             if f[i] == '0':
-                table.iat[i, 63] = f[i]
                 a.add(table.iat[i, st])
         for i in range(64):
             if table.iat[i, st] in a:
                 table.iloc[i, st] = ''
+    return table
 
 
 def output(table):
@@ -37,20 +38,23 @@ def update__(string2, string3):
 
 
 def make_boolean_expression(table):
+    k = 0
     for i in range(64):
         if table.iat[i, 63] == '1':
-            st = ""
+            k += 1
+            st = ''
             for j in range(63):
                 if table.iat[i, j] != '' and st != '':
                     st += " v " + update__(table.iat[i, j], cols[j])
                 if table.iat[i, j] != '' and st == '':
                     st += update__(table.iat[i, j], cols[j])
-            st += " = 1"
+            st = str(k) + ") " + st + " = 1"
             print(st)
 
 
 def method_of_uncertain_coefficients(f):
+    print("--- This is uncertain coefficients method ---\n")
     workbook = pd.read_excel('First_Table.xlsx').astype(str)
-    del_bad_cells(workbook, f)
+    workbook = del_bad_cells(workbook, f)
     output(workbook)
     make_boolean_expression(workbook)
